@@ -1,9 +1,19 @@
 package com.philspelman.springgrouplanguages.models;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 public class Book {
+    @Size(min = 3, max = 20)
     private String title;
+
+    @Size(min = 5, max = 400)
     private String description;
+
+    @Size(min = 3, max = 20)
     private String language;
+
+    @Min(30)
     private int numberOfPages;
 
     public Book() {

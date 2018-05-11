@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
-    @RequestMapping
+
+    @RequestMapping("/")
     public String index() {
 
         System.out.println("got to index");
-
 
         return "index";
     }

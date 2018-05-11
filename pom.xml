@@ -25,25 +25,26 @@
     </properties>
 
     <dependencies>
-        <!--Trying to add BOOTSTRAP -->
-        <dependency>
-            <groupId>com.efsavage.twitter.bootstrap</groupId>
-            <artifactId>bootstrap-maven</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <!--END adding BOOTSTRAP-->
+    <!--Trying to add BOOTSTRAP -->
+            <dependency>
+                <groupId>com.efsavage.twitter.bootstrap</groupId>
+                <artifactId>bootstrap-maven</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+            <!--END adding BOOTSTRAP-->
 
-        <!--ADDED FOR TEMPLATE ENGINGE -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
+            <!--ADDED FOR TEMPLATE ENGINGE -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-jasper</artifactId>
+            </dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <!--END OF ADDED FOR TEMPLATE ENGINE -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+            </dependency>
+            <!--END OF ADDED FOR TEMPLATE ENGINE -->
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
