@@ -48,27 +48,37 @@ public class Books {
 
     // FIND BOOK BY ID
     @RequestMapping("/books/{book_id}")
-    public String findBookByIndex(Model model, @PathVariable("book_id") String book_id) {
-
+    public String findBookByIndex(Model model, @PathVariable("book_id") Long book_id) {
         System.out.println("Books Controller: reached /books/book_id route for book: " + book_id);
+
         model.addAttribute("book_id", book_id);
+        model.addAttribute("selectedBook", bookService.findBookById(book_id));
 
-
-        Integer book_index = Integer.parseInt(book_id);
-        System.out.println("book_index: " + book_index);
-
-        try {
-            System.out.println("entered try block....trying to get the book");
-            Book selectedBook = bookService.findBookByIndex(book_index);
-            System.out.println("book desc: " + selectedBook.getDescription());
-            model.addAttribute("selectedBook", selectedBook);
-
-        } catch (Exception err) {
-            System.out.println("Exception caught: " + err);
-
-        }
         return "showBook";
     }
+//    @RequestMapping("/books/{book_id}")
+//    public String findBookByIndex(Model model, @PathVariable("book_id") String book_id) {
+//
+//        System.out.println("Books Controller: reached /books/book_id route for book: " + book_id);
+//        model.addAttribute("book_id", book_id);
+//
+//
+//        Integer book_index = Integer.parseInt(book_id);
+//        System.out.println("book_index: " + book_index);
+//
+//        try {
+//            System.out.println("entered try block....trying to get the book");
+////            Book selectedBook = bookService.findBookByIndex(book_index);
+//            Book selectedBook = bookService.findBookById(book_index);
+//            System.out.println("book desc: " + selectedBook.getDescription());
+//            model.addAttribute("selectedBook", selectedBook);
+//
+//        } catch (Exception err) {
+//            System.out.println("Exception caught: " + err);
+//
+//        }
+//        return "showBook";
+//    }
 
 
     // CREATE NEW BOOKS
@@ -90,10 +100,11 @@ public class Books {
 
     // EDIT/UPDATE BOOK (show the form)
     @RequestMapping("/books/edit/{id}")
-    public String editBook(@PathVariable("id") int edit_book_id, Model model) {
+    public String editBook(@PathVariable("id") Long edit_book_id, Model model) {
         System.out.println("reached EDIT id route with id: " + edit_book_id);
 
-        Book book = bookService.findBookByIndex(edit_book_id);
+//        Book book = bookService.findBookByIndex(edit_book_id);
+        Book book = bookService.findBookById(edit_book_id);
 
         model.addAttribute("edit_book_id", edit_book_id);
 
@@ -108,7 +119,7 @@ public class Books {
 
     //HANDLE AN UPDATE
     @PostMapping("/books/edit/{id}")
-    public String updateBook(@PathVariable("id") int edit_book_id, @Valid @ModelAttribute("book") Book book, BindingResult bindingResult, Model model) {
+    public String updateBook(@PathVariable("id") Long edit_book_id, @Valid @ModelAttribute("book") Book book, BindingResult bindingResult, Model model) {
         System.out.println("Trying to update the book");
         model.addAttribute("edit_book_id", edit_book_id);
 
@@ -118,14 +129,15 @@ public class Books {
         } else {
             System.out.println("data were valid...trying to update the book");
 
-            bookService.updateBook(edit_book_id, book);
+//            bookService.updateBook(edit_book_id, book);
+            bookService.updateBook(book);
             return "redirect:/books";
 
         }
     }
 
     @RequestMapping("/books/delete/{id}")
-    public String destroy(@PathVariable("id") int selected_book_id) {
+    public String destroy(@PathVariable("id") Long selected_book_id) {
         System.out.println("Request to delete book: " + selected_book_id);
 
         bookService.destroyBook(selected_book_id);

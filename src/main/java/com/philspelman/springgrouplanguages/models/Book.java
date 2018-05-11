@@ -1,20 +1,80 @@
 package com.philspelman.springgrouplanguages.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
+@Entity
 public class Book {
-    @Size(min = 3, max = 20)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column
+    @Size(min = 3, max = 100)
     private String title;
 
+    @Column
     @Size(min = 5, max = 400)
     private String description;
 
-    @Size(min = 3, max = 20)
+    @Column
+    @Size(min = 3, max = 40)
     private String language;
 
+    @Column
     @Min(30)
     private int numberOfPages;
+
+    //Prevent the createdAt column from being updated after it is created
+    @Column(updatable = false)
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+    private Date createAt;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Column
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+    private Date updatedAt;
+
+    //something that should always happen BEFORE creating the object
+    @PrePersist
+    protected void onCreate() {
+        this.createAt = new Date();
+    }
+
+    //something that should always happen before UPDATING the object
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
+
 
     public Book() {
     }
@@ -24,6 +84,10 @@ public class Book {
         this.description = desc;
         this.language = lang;
         this.numberOfPages = pages;
+        onCreate();
+        onUpdate();
+//        this.createAt = new Date();
+//        this.updatedAt = new Date();
     }
 
     public String getTitle() {
