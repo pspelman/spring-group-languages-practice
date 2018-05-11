@@ -7,6 +7,14 @@ public class Language {
     @Size(min = 2)
     private String name;
 
+    @Size(min = 2)
+    private String creator;
+
+    @Size(min = 2)
+    private String currentVersion;
+
+
+
     public String getName() {
         return name;
     }
@@ -31,13 +39,6 @@ public class Language {
         this.currentVersion = currentVersion;
     }
 
-    @Size(min = 2)
-
-    private String creator;
-
-    @Size(min = 2)
-    private String currentVersion;
-
     public Language() {
 
     }
@@ -56,6 +57,7 @@ public class Language {
     public String toString() {
         return String.format("Language: %s | Creator: %s | V: %s", this.name, this.creator, this.currentVersion);
     }
+
 
 
 }

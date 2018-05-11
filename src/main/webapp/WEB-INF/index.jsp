@@ -4,6 +4,25 @@
     THIS IS THE GROUP LANGUAGE INDEX
 </h1>
 
+<a href="/languages">All languages page</a>
+<br/>
+Get language by id:<br/>
+<form action="/languages/id/getById/" name="user_language_search_form" method="post">
+    ID: <input type="text" name="find_language_id"/>
+<br/>
+    <input type="submit" />
+<br/>
+
+</form>
+
+
+
+
+<h1>
+    BOOK STUFF
+</h1>
+
+
 <br/>
 Go to the books<br/>
 
