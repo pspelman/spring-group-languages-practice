@@ -29,12 +29,21 @@ public class Books {
         return "books";
     }
 
+
+    //SHOW the BOOK form
+    @GetMapping("/books/new")
+    public String createBook(@ModelAttribute("book") Book book) {
+        System.out.println("Show the book form!");
+        return "bookForm";
+    }
+
     // CREATE NEW BOOKS
-    @RequestMapping("/books/new")
+    @PostMapping("/books/new")
     public String createBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult) {
         System.out.println("BookForm stuff");
         if (bindingResult.hasErrors()) {
             System.out.println("there were errors");
+            Languages.printBindingResultErrors(bindingResult);
             return "bookForm";
         } else {
             System.out.println("No errors....trying to add book");

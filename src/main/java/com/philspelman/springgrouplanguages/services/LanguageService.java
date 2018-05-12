@@ -87,10 +87,20 @@ public class LanguageService {
 //    }
 //
 
-    //delete language
+    //destroy language
     public void destroyLanguage(Long id) {
         languageRepository.deleteById(id);
+
     }
+
+    //delete language
+//    public void destroyLanguage(Long id) {
+//        if (languageRepository.existsById(id)) {
+//            System.out.println("trying to delete that from the LanguageService");
+//        } else {
+//            System.out.println("Invalid language ID ");
+//        }
+//    }
 
 //    //NODB - delete language
 //    public void destroyLanguage(int id) {

@@ -1,3 +1,4 @@
+
 package com.philspelman.springgrouplanguages.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -7,6 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 //DONE: make this an entity w/@Entity
+
 @Entity
 public class Language {
 
@@ -21,7 +23,7 @@ public class Language {
     private String name;
 
     @Column
-    @Size(min = 2, max = 200)
+    @Size(min = 2, max = 100)
     private String creator;
 
     @Column
@@ -29,9 +31,11 @@ public class Language {
     private String currentVersion;
 
     //DONE: add createdAt Date() w/(updatable = false)
+    //Prevent the createdAt column from being updated after it is created
     @Column(updatable = false)
     @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
     private Date createdAt;
+
 
 
 
@@ -41,12 +45,17 @@ public class Language {
     private Date updatedAt;
 
 
-    public Date getCreatedAt() {
-
-        return createdAt;
+    public long getId() {
+        return id;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {return createdAt; }
+
+    public void setCreateAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -58,14 +67,6 @@ public class Language {
         this.updatedAt = updatedAt;
     }
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

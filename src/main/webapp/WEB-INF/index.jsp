@@ -50,5 +50,5 @@ ${errors}
     </a>
 </h3>
 <%--Import language form:<br/>--%>
-<%--<c:import url="lang_form.jsp"/>--%>
-<%--<%@include file="lang_form.jsp"%>--%>
+<%--<c:import url="languageForm.jsp"/>--%>
+<%--<%@include file="languageForm.jsp"%>--%>

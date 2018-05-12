@@ -5,6 +5,8 @@ import com.philspelman.springgrouplanguages.services.LanguageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,20 +31,44 @@ public class Languages {
         return "languages";
     }
 
-    // CREATE NEW BOOKS
-    @RequestMapping("/languages/new")
+    @GetMapping("/languages/new")
+    public String createLanguage(@ModelAttribute("language") Language language) {
+        System.out.println("LanguageForm stuff");
+            return "languageForm";
+    }
+
+
+    // CREATE NEW LANGUAGE
+    @PostMapping("/languages/new")
     public String createLanguage(@Valid @ModelAttribute("language") Language language, BindingResult bindingResult) {
         System.out.println("LanguageForm stuff");
         if (bindingResult.hasErrors()) {
             System.out.println("there were errors");
+            printBindingResultErrors(bindingResult);
             return "languageForm";
         } else {
             System.out.println("No errors....trying to add language");
 
-            //NEED TO SAVE THE BOOK
+            //NEED TO SAVE THE LANGUAGE
             languageService.addLanguage(language);
 
             return "redirect:/";
+        }
+    }
+
+    public static void printBindingResultErrors(BindingResult bindingResult) {
+        for (Object object : bindingResult.getAllErrors()) {
+            if(object instanceof FieldError) {
+                FieldError fieldError = (FieldError) object;
+
+                System.out.println(fieldError.getCode());
+            }
+
+            if(object instanceof ObjectError) {
+                ObjectError objectError = (ObjectError) object;
+
+                System.out.println(objectError.getCode());
+            }
         }
     }
 
@@ -114,11 +140,23 @@ public class Languages {
     public String destroy(@PathVariable("id") Long selected_language_id) {
         System.out.println("Request to delete language: " + selected_language_id);
 
+
         languageService.destroyLanguage(selected_language_id);
 
-        return "redirect:/languages";
+        return "redirect:/";
     }
 
+
+
+//    @RequestMapping("/languages/delete/{id}")
+//    public String destroy(@PathVariable("id") Long selected_language_id) {
+//        System.out.println("Request to delete language: " + selected_language_id);
+//
+//        languageService.destroyLanguage(selected_language_id);
+//
+//        return "redirect:/languages";
+//    }
+//
 
 
 

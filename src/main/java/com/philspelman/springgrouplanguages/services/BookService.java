@@ -83,10 +83,14 @@ public class BookService {
 //        }
 //    }
 //
-//    public void destroyBook(int id) {
     public void destroyBook(Long id) {
-        if (id < books.size()) {
-            books.remove(id);
-        }
+        System.out.println("trying to delete the book with id: " + id);
+        bookRepository.deleteById(id);
+
     }
+//    public void destroyBook(Long id) {
+//        if (id < books.size()) {
+//            books.remove(id);
+//        }
+//    }
 }
