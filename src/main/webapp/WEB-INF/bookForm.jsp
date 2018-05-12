@@ -21,9 +21,13 @@
         <form:errors path="numberOfPages"/><br/>
         <form:input type="number" path="numberOfPages"/></form:label>
     <br/>
+
+
     <!-- .FIELD NEEDED FOR THE BOOK ID FROM DB.. -->
     <form:hidden path="id"/>
     <!-- ... -->
+
+
     <input type="submit" value="Submit"/>
 </form:form>
 <!-- ... -->

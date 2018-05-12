@@ -5,106 +5,115 @@ import com.philspelman.springgrouplanguages.services.LanguageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 public class Languages {
-
-    //bring in connection to data manager (LanguageService)
+    //need to bring in the connection to the data manager (the Service)
     private final LanguageService languageService;
+    //Hook up the service
     public Languages(LanguageService languageService) {
-
-        this.languageService = languageService;}
+        this.languageService = languageService;
+    }
 
 
     @RequestMapping("/languages")
     public String languages(Model model) {
-        System.out.println("reached the /languages route...getting the languages");
-
         List<Language> languages = languageService.allLanguages();
 
         model.addAttribute("languages", languages);
-
         return "languages";
     }
 
-
-
-
+    // CREATE NEW BOOKS
     @RequestMapping("/languages/new")
-    public String newLanguage(@ModelAttribute("language") Language language) {
-        return "lang_form";
-    }
-
-
-////    public String newLanguage(@Valid Language language, BindingResult bindingResult) {
-
-//    @RequestMapping("/createLang")
-//    public String newLanguageProcessor(Language language) {
-//        System.out.println(language);
-//
-//        return "redirect: /languages";
-//    }
-    @RequestMapping("/createLang")
-    public String newLanguageProcessor(@Valid Language language, BindingResult br) {
-        if (br.hasErrors()) {
-            System.out.println("got some errors!");
-            return "lang_form";
+    public String createLanguage(@Valid @ModelAttribute("language") Language language, BindingResult bindingResult) {
+        System.out.println("LanguageForm stuff");
+        if (bindingResult.hasErrors()) {
+            System.out.println("there were errors");
+            return "languageForm";
         } else {
-            System.out.println(language);
-            return "redirect: /languages";
+            System.out.println("No errors....trying to add language");
+
+            //NEED TO SAVE THE BOOK
+            languageService.addLanguage(language);
+
+            return "redirect:/";
         }
+    }
+
+
+    @RequestMapping(value = "/languages/id/getById/")
+    public String findLanguageByIndex(@ModelAttribute("errors") String errors,
+                                  @RequestParam("find_language_id") String findId,
+                                  RedirectAttributes redirectAttributes) {
+
+        System.out.println("got form post for language id: " + findId);
+        String redirectRoute = String.format("/languages/%s",findId);
+
+        return "redirect:" + redirectRoute;
 
     }
-//
 
-    //todo: EDIT language
+
+
+    // FIND BOOK BY ID
+    @RequestMapping("/languages/{language_id}")
+    public String findLanguageByIndex(Model model, @PathVariable("language_id") Long language_id) {
+        System.out.println("Languages Controller: reached /languages/language_id route for language: " + language_id);
+
+        model.addAttribute("language_id", language_id);
+        model.addAttribute("selectedLanguage", languageService.findLanguageById(language_id));
+
+        return "showLanguage";
+    }
+
+    // EDIT/UPDATE LANGUAGE (show the form)
     @RequestMapping("/languages/edit/{id}")
-    public String edit(@PathVariable("id") int edit_language_id, Model model) {
-        System.out.println("reached EDIT language route...tring to edit language: " + edit_language_id);
+    public String editLanguage(@PathVariable("id") Long edit_language_id, Model model) {
+        System.out.println("reached EDIT id route with id: " + edit_language_id);
 
-        Language language = languageService.findLanguageByIndex(edit_language_id);
+//        Language language = languageService.findLanguageByIndex(edit_language_id);
+        Language language = languageService.findLanguageById(edit_language_id);
 
         model.addAttribute("edit_language_id", edit_language_id);
-        model.addAttribute("language", language);
 
-        return "editLanguage";
-
+        if (language != null) {
+            model.addAttribute("language", language);
+            return "editLanguage";
+        } else {
+            return "redirect:/languages";
+        }
     }
 
+
+    //HANDLE AN UPDATE
     @PostMapping("/languages/edit/{id}")
-    public String edit(@PathVariable("id") int edit_language_id, @Valid @ModelAttribute("language") Language language, BindingResult bindingResult, Model model) {
-        //test the binding result against the model for errors
-        System.out.println("received UPDATE info to the POST route...");
+    public String updateLanguage(@PathVariable("id") Long edit_language_id, @Valid @ModelAttribute("language") Language language, BindingResult bindingResult, Model model) {
+        System.out.println("Trying to update the language");
         model.addAttribute("edit_language_id", edit_language_id);
 
         if (bindingResult.hasErrors()) {
-            System.out.println("Errors in data");
+            System.out.println("Errors in update info");
             return "editLanguage";
         } else {
-            System.out.println("Data were valid, updating language");
-            languageService.updateLanguage(edit_language_id, language);
+            System.out.println("data were valid...trying to update the language");
 
+//            languageService.updateLanguage(edit_language_id, language);
+            languageService.updateLanguage(language);
             return "redirect:/languages";
+
         }
-
-
-
     }
 
-
-    //todo: DELETION
     @RequestMapping("/languages/delete/{id}")
-    public String destroy(@PathVariable("id") int selected_language_id) {
-        System.out.println("trying to delete language with id: " + selected_language_id);
+    public String destroy(@PathVariable("id") Long selected_language_id) {
+        System.out.println("Request to delete language: " + selected_language_id);
 
-        //call the service's method to delete the language
         languageService.destroyLanguage(selected_language_id);
 
         return "redirect:/languages";
@@ -113,17 +122,15 @@ public class Languages {
 
 
 
-}
 
-
-
-
-//    public String languages(Model model) {
+//    //NOW MAKE THE ABILITY TO ADD NEW BOOKS!
+//    @RequestMapping("/languages/new")
+//    public String newLanguage(@ModelAttribute("language") Language language) {
+//        System.out.println("LanguageForm stuff");
 //
-//
-//        System.out.println("getting the languages page");
-//
-//        return "lang_form";
-////        return "languages";
+//        return "languageForm";
 //    }
-//}
+//
+
+
+}

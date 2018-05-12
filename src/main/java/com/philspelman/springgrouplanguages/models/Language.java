@@ -1,19 +1,71 @@
 package com.philspelman.springgrouplanguages.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
+//DONE: make this an entity w/@Entity
+@Entity
 public class Language {
-    @Size(min = 2)
+
+    //DONE: add an ID @Id & @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    //DONE: make the attributes into columns
+    @Column
+    @Size(min = 2, max = 40)
     private String name;
 
-    @Size(min = 2)
+    @Column
+    @Size(min = 2, max = 200)
     private String creator;
 
-    @Size(min = 2)
+    @Column
+    @Size(min = 2, max = 30)
     private String currentVersion;
 
+    //DONE: add createdAt Date() w/(updatable = false)
+    @Column(updatable = false)
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+    private Date createdAt;
 
+
+
+    //DONE: add updatedAt Date()
+    @Column
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+    private Date updatedAt;
+
+
+    public Date getCreatedAt() {
+
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -40,7 +92,18 @@ public class Language {
     }
 
     public Language() {
+    }
 
+    //something that should always happen BEFORE creating the object
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    //Add the @PreUpdate - associated code should ALWAYS happen before UPDATING the object
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
     }
 
 
@@ -48,6 +111,14 @@ public class Language {
         this.name = name;
         this.creator = creator;
         this.currentVersion = currentVersion;
+
+        //DONE: add createdAt and updatedAt to the constructor
+        onCreate();
+        onUpdate();
+
+        //fixed: onCreate();
+        //fixed: onUpdate();
+
     }
 
     public String getLanguage() {

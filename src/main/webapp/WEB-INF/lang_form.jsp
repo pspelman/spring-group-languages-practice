@@ -2,7 +2,7 @@
 This is the lang form!
 <br/>
 <div class="form">
-    <form:form method="POST" action="/createLang" modelAttribute="language">
+    <form:form method="POST" action="/languages/new" modelAttribute="language">
         <form:label path="name">Language:
             <form:errors path="name"/>
             <form:input path="name"/></form:label>
@@ -15,6 +15,16 @@ This is the lang form!
             <form:errors path="currentVersion"/>
             <form:input path="currentVersion"/></form:label>
         <br/>
+
+
+        <!-- .FIELD NEEDED FOR THE LANGUAGE ID FROM DB.. -->
+        <form:hidden path="id"/>
+        <!-- ... -->
+
+
+
+
         <input type="submit" value="Submit"/>
     </form:form>
 </div>
+<a href="/">Home</a>

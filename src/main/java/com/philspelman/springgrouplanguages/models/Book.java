@@ -33,7 +33,13 @@ public class Book {
     //Prevent the createdAt column from being updated after it is created
     @Column(updatable = false)
     @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
-    private Date createAt;
+    private Date createdAt;
+
+    @Column
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+    private Date updatedAt;
+
+
 
     public long getId() {
         return id;
@@ -44,11 +50,11 @@ public class Book {
     }
 
     public Date getCreateAt() {
-        return createAt;
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreateAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Date getUpdatedAt() {
@@ -59,14 +65,10 @@ public class Book {
         this.updatedAt = updatedAt;
     }
 
-    @Column
-    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
-    private Date updatedAt;
-
     //something that should always happen BEFORE creating the object
     @PrePersist
     protected void onCreate() {
-        this.createAt = new Date();
+        this.createdAt = new Date();
     }
 
     //something that should always happen before UPDATING the object
@@ -86,7 +88,7 @@ public class Book {
         this.numberOfPages = pages;
         onCreate();
         onUpdate();
-//        this.createAt = new Date();
+//        this.createdAt = new Date();
 //        this.updatedAt = new Date();
     }
 

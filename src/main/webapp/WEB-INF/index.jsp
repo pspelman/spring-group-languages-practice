@@ -6,6 +6,10 @@
 
 <a href="/languages">All languages page</a>
 <br/>
+<a href="/languages/new">Add a language</a>
+
+
+<br/>
 Get language by id:<br/>
 <form action="/languages/id/getById/" name="user_language_search_form" method="post">
     ID: <input type="text" name="find_language_id"/>
@@ -45,3 +49,6 @@ ${errors}
         Add a book
     </a>
 </h3>
+<%--Import language form:<br/>--%>
+<%--<c:import url="lang_form.jsp"/>--%>
+<%--<%@include file="lang_form.jsp"%>--%>

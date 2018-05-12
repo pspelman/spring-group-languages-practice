@@ -8,10 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -31,6 +28,24 @@ public class Books {
         model.addAttribute("books", books);
         return "books";
     }
+
+    // CREATE NEW BOOKS
+    @RequestMapping("/books/new")
+    public String createBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult) {
+        System.out.println("BookForm stuff");
+        if (bindingResult.hasErrors()) {
+            System.out.println("there were errors");
+            return "bookForm";
+        } else {
+            System.out.println("No errors....trying to add book");
+
+            //NEED TO SAVE THE BOOK
+            bookService.addBook(book);
+
+            return "redirect:/";
+        }
+    }
+
 
     @RequestMapping(value = "/books/id/getById/")
     public String findBookByIndex(@ModelAttribute("errors") String errors,
@@ -81,22 +96,6 @@ public class Books {
 //    }
 
 
-    // CREATE NEW BOOKS
-    @RequestMapping("/books/new")
-    public String createBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult) {
-        System.out.println("BookForm stuff");
-        if (bindingResult.hasErrors()) {
-            System.out.println("there were errors");
-            return "bookForm";
-        } else {
-            System.out.println("No errors....trying to add book");
-
-            //NEED TO SAVE THE BOOK
-            bookService.addBook(book);
-
-            return "redirect:/";
-        }
-    }
 
     // EDIT/UPDATE BOOK (show the form)
     @RequestMapping("/books/edit/{id}")
